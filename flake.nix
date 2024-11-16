@@ -18,7 +18,8 @@
             python312Packages.pip
           ];
         shellHook = ''
-          python -m v
+          python -m venv .venv
+          source .venv/bin/activate
         '';
         };
       };

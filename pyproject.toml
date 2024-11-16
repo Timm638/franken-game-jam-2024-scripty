@@ -21,8 +21,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  'mypy'
 ]
-#typing = [ 'mypy', 'django-stubs[compatible-mypy]' ]
 
 [project.scripts]
 'messOS' = 'messOS:__main__'
