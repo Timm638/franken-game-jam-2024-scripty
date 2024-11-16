@@ -4,7 +4,9 @@ import random
 from pathlib import Path
 import shutil
 
-class _Scenario:
+from . import Task, Scenario
+
+class SortScenario(Scenario):
 
     folders : list
     items : list
@@ -21,9 +23,12 @@ class _Scenario:
         new_scenario.items = copy.deepcopy(self.items)
         new_scenario.folder_name = copy.deepcopy(self.folder_name)
         return new_scenario
+    
+    def get_name(self) -> str:
+        return self.folder_name
 
 scenarios =  [
-    _Scenario(
+    SortScenario(
         [
             '1_documents',
             '2_music',
@@ -36,7 +41,7 @@ scenarios =  [
         ],
         'home'
     ),
-_Scenario(
+    SortScenario(
         [
             '1_democratic',
             '2_republican',
@@ -56,7 +61,7 @@ _Scenario(
         ],
     'free_country'
     ),
-_Scenario(
+    SortScenario(
         [
             '0_Who_has_Paul_thanked_for_each_location_in_keynote',
             '1_Bamberg',
@@ -76,7 +81,7 @@ _Scenario(
         ],
         'franken_game_jam_2024'
     ),
-_Scenario(
+    SortScenario(
         [
             'Actions',
             'Strategy',
@@ -94,18 +99,27 @@ _Scenario(
     )
 ]
 
-class SortFilesTask:
+class SortFilesTask(Task):
 
     description : str
     task_folder : Path
-    scenario : _Scenario
+    scenario : SortScenario
 
-    def __init__(self):
-        self.scenario = copy.deepcopy(random.choice(scenarios))
+    def __init__(self, scenario):
+        if scenario_name:
+            self.scenario = scenario
+        else:
+            self.scenario = copy.deepcopy(random.choice(scenarios))
         self.description = 'Sort the folder \'{0}\''.format(self.scenario.folder_name)
         self.reset()
+    
+    def get_display_name(self):
+        return self.description
 
-    def check(self) -> bool:
+    def check_progress(self):
+        pass
+
+    def is_completed(self) -> bool:
         # for every item
         for item in self.scenario.items:
             folder_name = self.scenario.folders[item[2]]
@@ -119,7 +133,7 @@ class SortFilesTask:
         self.reset()
 
 
-    def create_file(self, file_path : Path, file_content : str = 'No content given. :)'):
+    def create_file(self, file_path: Path, file_content: str = 'No content given. :)'):
         f = open(self.task_folder / file_path, 'w')  # open file in append mode
         f.write(file_content)
         f.close()

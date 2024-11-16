@@ -3,13 +3,14 @@ import sys
 import os
 from time import sleep
 
-from messOS.tasks.sortFiles import SortFilesTask
+from messOS.tasks import Task
+from messOS.tasks.sort_files import SortFilesTask
 
 from termcolor import colored, cprint
 
 cycle_time = 0.1
 
-tasks = []
+tasks: list[Task] = []
 
 def clear():
     for _ in range(300):
@@ -54,7 +55,7 @@ def draw_tasklist():
 
 def all_tasks_fulfilled() -> bool:
     for task in tasks:
-        if not task.check():
+        if not task.is_completed():
             return False
     return True
 
@@ -62,7 +63,7 @@ def add_task():
     component_list = [SortFilesTask]
     tasks.append(random.choice(component_list)())
 
-# open
+# open the working directory
 if os.name == 'nt':
     os.system(r'start {0}'.format(os.getcwd()))
 else:
