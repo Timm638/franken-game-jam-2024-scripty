@@ -5,7 +5,7 @@ readme = 'README.md'
 requires-python = '>=3.12'
 authors = [
   {name = 'Dennis Streicher (Stennsen)'},
-  {name = 'Timm Bugla'},
+  {name = 'Timm Bugla (Timm638)'},
 ]
 classifiers = [
   'Development Status :: 2 - Pre-Alpha',
@@ -13,6 +13,7 @@ classifiers = [
 ]
 
 dependencies = [
+  'termcolor==2.5.0'
 ]
 
 [project.optional-dependencies]
