@@ -1,3 +1,4 @@
+import random
 import sys
 import os
 from time import sleep
@@ -35,12 +36,24 @@ def do_eternal_loading():
             sleep(cycle_time)
             clear()
 
-while True:
+
+def draw_gibberish():
+    gibberish_chars = '▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐▔▕🬀🬁🬂🬃🬄🬅🬆🬇🬈🬉🬊🬋🬌🬍🬎🬏🬐🬒🬑🬒🬓🬔🬕🬖🬗🬘🬙🬚🬛🬜🬝🬞🬟🬠🬡🬢🬣🬤🬥🬦🬦🬦🬧🬦🬧🬨🬩🬪🬫🬬🬭🬮🬯🬰🬱🬲🬳🬴🬵🬶🬷🬸🬹🬺🬻'
+    for i in range(0, 64):
+        cur_line = ''
+        for j in range(0, 64):
+            cur_line += random.choice(gibberish_chars)
+        print(cur_line)
+
+def draw_tasklist():
     for task in tasks:
         is_finished : bool = task.check()
         text_color = 'white' if not is_finished else 'green'
         finish_char ='✓' if is_finished else ' '
         print(colored('[' + finish_char + '] - ' + task.description, color=text_color))
+
+while True:
+    draw_gibberish()
     frame()
 
 
