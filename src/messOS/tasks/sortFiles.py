@@ -8,15 +8,18 @@ class _Scenario:
 
     folders : list
     items : list
+    folder_name : str
 
-    def __init__(self, folders, items):
+    def __init__(self, folders, items, folder_name):
         self.folders = folders
         self.items = items
+        self.folder_name = folder_name
 
     def __deepcopy__(self, memodict={}):
-        new_scenario = _Scenario(self.folders, self.items)
+        new_scenario = _Scenario(self.folders, self.items, self.folder_name)
         new_scenario.folders = copy.deepcopy(self.folders)
         new_scenario.items = copy.deepcopy(self.items)
+        new_scenario.folder_name = copy.deepcopy(self.folder_name)
         return new_scenario
 
 scenarios =  [
@@ -30,7 +33,8 @@ scenarios =  [
             ('work_report.txt', 'FEBRUARY 2025', 0),
             ('your_perfect_partner_theme_doodle.mp3', 'Dododoo do dod do dooooo do', 1),
             ('tax_evasion.pdf', ':)', 2),
-        ]
+        ],
+        'home'
     ),
 _Scenario(
         [
@@ -49,26 +53,8 @@ _Scenario(
             ('gerald____ford.char', '', 1),
             ('richard___nixon.char', '', 1),
             ('john____f_kennedy.char', '', 0),
-        ]
-    ),
-_Scenario(
-        [
-            '1_democratic',
-            '2_republican',
         ],
-        [
-            ('barack____obama.char', '', 0),
-            ('donald____trump.char', '', 1),
-            ('joe_______biden.char', '', 0),
-            ('george_w__bush.char', '', 1),
-            ('bill______clinton.char', '', 0),
-            ('george_hw_bush.char', '', 1),
-            ('ronald____reagan.char', '', 1),
-            ('jimmy_____carter.char', '', 0),
-            ('gerald____ford.char', '', 1),
-            ('richard___nixon.char', '', 1),
-            ('john____f_kennedy.char', '', 0),
-        ]
+    'free_country'
     ),
 _Scenario(
         [
@@ -87,7 +73,8 @@ _Scenario(
             ('sebastian.char', '', 4),
             ('linda.char', '', 5),
             ('andy.char', '', 6),
-        ]
+        ],
+        'franken_game_jam_2024'
     )
 ]
 
@@ -98,8 +85,8 @@ class SortFilesTask:
     scenario : _Scenario
 
     def __init__(self):
-        self.description = 'Sort your files'
-        self.scenario = copy.deepcopy(scenarios[3])
+        self.scenario = copy.deepcopy(random.choice(scenarios))
+        self.description = 'Sort the folder \'{0}\''.format(self.scenario.folder_name)
         self.reset()
 
     def check(self) -> bool:

@@ -52,8 +52,14 @@ def draw_tasklist():
         finish_char ='✓' if is_finished else ' '
         print(colored('[' + finish_char + '] - ' + task.description, color=text_color))
 
+# open
+if os.name == 'nt':
+    os.system(r'start {0}'.format(os.getcwd()))
+else:
+    os.system(r'xdg-open {0}'.format(os.getcwd()))
+
 while True:
-    draw_gibberish()
+    draw_tasklist()
     frame()
 
 
