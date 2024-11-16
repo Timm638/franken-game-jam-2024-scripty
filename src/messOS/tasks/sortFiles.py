@@ -75,6 +75,22 @@ _Scenario(
             ('andy.char', '', 6),
         ],
         'franken_game_jam_2024'
+    ),
+_Scenario(
+        [
+            'Actions',
+            'Strategy',
+            'RPG',
+            'Sandbox'
+        ],
+        [
+            ('battlef1eld', '', 0),
+            ('call_of_duti', '', 0),
+            ('civilization', '', 1),
+            ('minceraft', '', 3),
+            ('final_fantasi', '', 2),
+        ],
+        'games'
     )
 ]
 
@@ -109,7 +125,7 @@ class SortFilesTask:
         f.close()
 
     def reset(self):
-        self.task_folder = Path(os.getcwd()) / Path('to_sort')
+        self.task_folder = Path(os.getcwd()) / Path(self.scenario.folder_name)
         if os.path.exists(self.task_folder):
             shutil.rmtree(self.task_folder)
         os.mkdir(self.task_folder)
