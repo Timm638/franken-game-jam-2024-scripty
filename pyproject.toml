@@ -1,0 +1,24 @@
+[project]
+name = 'messOS'
+version = 'v0.0.1'
+readme = 'README.md'
+requires-python = '>=3.12'
+authors = [
+  {name = 'Dennis Streicher (Stennsen)'},
+  {name = 'Timm Bugla'},
+]
+classifiers = [
+  'Development Status :: 2 - Pre-Alpha',
+  'Programming Language :: Python'
+]
+
+dependencies = [
+]
+
+[project.optional-dependencies]
+dev = [
+]
+#typing = [ 'mypy', 'django-stubs[compatible-mypy]' ]
+
+[project.scripts]
+'messOS' = 'messOS:__main__'
