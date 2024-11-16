@@ -1,4 +1,15 @@
 from abc import ABC, abstractmethod
+from enum import Enum, auto
+
+class TaskProgress(Enum):
+    UNTOUCHED = auto()
+    IN_PROGRESS = auto()
+    FINISHED = auto()
+
+class Scenario(ABC):
+    @abstractmethod
+    def get_name(self) -> str:
+        pass
 
 class Task(ABC):
     @abstractmethod
@@ -10,15 +21,13 @@ class Task(ABC):
         pass
     
     @abstractmethod
-    def is_completed(self) -> bool:
+    def get_current_progress(self) -> TaskProgress:
         pass
+
+    def is_completed(self) -> bool:
+        return self.get_current_progress() == TaskProgress.FINISHED
     
     @abstractmethod
     def get_display_name(self) -> str:
         pass
     
-class Scenario(ABC):
-
-    @abstractmethod
-    def get_name(self) -> str:
-        pass

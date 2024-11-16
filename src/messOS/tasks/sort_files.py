@@ -4,7 +4,8 @@ import random
 from pathlib import Path
 import shutil
 
-from . import Task, Scenario
+from . import Task, Scenario, TaskProgress
+from messOS.filesystem import STATE_DIR
 
 class SortScenario(Scenario):
 
@@ -18,7 +19,7 @@ class SortScenario(Scenario):
         self.folder_name = folder_name
 
     def __deepcopy__(self, memodict={}):
-        new_scenario = _Scenario(self.folders, self.items, self.folder_name)
+        new_scenario = SortScenario(self.folders, self.items, self.folder_name)
         new_scenario.folders = copy.deepcopy(self.folders)
         new_scenario.items = copy.deepcopy(self.items)
         new_scenario.folder_name = copy.deepcopy(self.folder_name)
@@ -105,11 +106,8 @@ class SortFilesTask(Task):
     task_folder : Path
     scenario : SortScenario
 
-    def __init__(self, scenario):
-        if scenario_name:
-            self.scenario = scenario
-        else:
-            self.scenario = copy.deepcopy(random.choice(scenarios))
+    def __init__(self, scenario=copy.deepcopy(random.choice(scenarios))):
+        self.scenario = scenario
         self.description = 'Sort the folder \'{0}\''.format(self.scenario.folder_name)
         self.reset()
     
@@ -118,6 +116,9 @@ class SortFilesTask(Task):
 
     def check_progress(self):
         pass
+    
+    def get_current_progress(self):
+        return TaskProgress.IN_PROGRESS
 
     def is_completed(self) -> bool:
         # for every item
@@ -139,7 +140,7 @@ class SortFilesTask(Task):
         f.close()
 
     def reset(self):
-        self.task_folder = Path(os.getcwd()) / Path(self.scenario.folder_name)
+        self.task_folder = STATE_DIR / Path(self.scenario.folder_name)
         if os.path.exists(self.task_folder):
             shutil.rmtree(self.task_folder)
         os.mkdir(self.task_folder)
