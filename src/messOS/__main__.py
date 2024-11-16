@@ -10,7 +10,6 @@ from termcolor import colored, cprint
 cycle_time = 0.1
 
 tasks = []
-tasks.append(SortFilesTask())
 
 def clear():
     for _ in range(300):
@@ -46,11 +45,22 @@ def draw_gibberish():
         print(cur_line)
 
 def draw_tasklist():
+    print('-= TASKLIST =-')
     for task in tasks:
         is_finished : bool = task.check()
         text_color = 'white' if not is_finished else 'green'
         finish_char ='✓' if is_finished else ' '
         print(colored('[' + finish_char + '] - ' + task.description, color=text_color))
+
+def all_tasks_fulfilled() -> bool:
+    for task in tasks:
+        if not task.check():
+            return False
+    return True
+
+def add_task():
+    component_list = [SortFilesTask]
+    tasks.append(random.choice(component_list)())
 
 # open
 if os.name == 'nt':
@@ -58,7 +68,11 @@ if os.name == 'nt':
 else:
     os.system(r'xdg-open {0}'.format(os.getcwd()))
 
+add_task()
+
 while True:
+    if all_tasks_fulfilled():
+        add_task()
     draw_tasklist()
     frame()
 
