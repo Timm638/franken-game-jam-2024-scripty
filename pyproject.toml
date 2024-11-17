@@ -16,8 +16,8 @@ dependencies = [
   'termcolor==2.5.0',
   'textual',
   'mouse',
-  'watchdog',
-  'python-vlc'
+  'python-vlc',
+  'httpx'
 ]
 
 [project.optional-dependencies]

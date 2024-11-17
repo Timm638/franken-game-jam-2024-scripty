@@ -7,8 +7,14 @@ import glob
 import uuid
 
 from messOS.filesystem import STATE_DIR
+import webbrowser
+
+import httpx
 
 MUSIC_DIR = Path(__file__).parent / "music"
+
+MEME_API = "https://meme-api.com/gimme"
+
 
 def play_random_music():
     music_files = glob.glob(str(MUSIC_DIR / "*"))
@@ -22,3 +28,12 @@ def produce_rabbit():
     shutil.copyfile(rabbit_image_path, rabbit_des)
 
 
+
+    
+def random_meme():
+    meme_response = httpx.get(MEME_API)
+    if meme_response.status_code == httpx.codes.OK:
+        meme_url = meme_response.json()['url']
+        webbrowser.open(meme_url)
+        
+REGISTERED_ANNOY = [play_random_music, random_meme, produce_rabbit]

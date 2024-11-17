@@ -14,7 +14,7 @@ from messOS.tasks.sort_files import SortFilesTask
 from messOS.tasks.shred_files import ShredTask
 from messOS.filesystem import STATE_DIR
 
-from messOS.annoyances import play_random_music, produce_rabbit
+from messOS.annoyances import REGISTERED_ANNOY
 
 from termcolor import colored, cprint
 
@@ -113,10 +113,8 @@ def main():
     
     while True:
         # evaluate random event
-        #if amount_completed_tasks()*5+2 >= random.randrange(100_000):
-        #    play_random_music()
-        if (frame_count % 200) == 0:
-            produce_rabbit()
+        if amount_completed_tasks()**2+2 >= random.randrange(100_000):
+            random.choice(REGISTERED_ANNOY)()
 
         if all_tasks_fulfilled():
             add_task()
