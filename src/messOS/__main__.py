@@ -5,6 +5,7 @@ import os
 import subprocess
 import platform
 import shutil
+import glob
 from time import sleep
 from typing import Literal
 
@@ -114,7 +115,10 @@ def sabotage_random_completed_task():
         chosen_task = random.choice(tasks)
         if chosen_task.is_completed():
             chosen_task.sabotage()
-            subprocess.Popen(['cvlc', PROJECT_DIR / 'src' / 'messOS' / 'resources' / 'mlg_horn.mp3', '--no-loop'], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+            
+            sound_files = list(glob.glob(str(PROJECT_DIR / 'src/messOS/resources/sounds/*')))
+            print(sound_files)
+            subprocess.Popen(['cvlc', random.choice(sound_files), '--no-loop'], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
             return
 
 def main():
@@ -185,4 +189,4 @@ ShredTask(scenario=shred_scenarios[2])
 tasks: list[Task] = []
 
 
-main()
+#main()
