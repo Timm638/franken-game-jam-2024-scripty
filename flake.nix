@@ -14,10 +14,13 @@
       {
         default = pkgs.mkShell {
           packages = with pkgs; [
+            vlc
+            libvlc
             python312Full
             python312Packages.pip
           ];
         shellHook = ''
+          export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [ pkgs.libvlc]}:$LD_LIBRARY_PATH"
           python -m venv .venv
           source .venv/bin/activate
         '';
