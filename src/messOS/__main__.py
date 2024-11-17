@@ -141,11 +141,20 @@ def main():
 
     frame_count = 0
 
+    annoyance_probabilities = [
+        0,    0,   0,    0.003, 0.005,
+        0.015, 0.02, 0.03, 0.04,  0.05 ]
+
     while True:
         max_score = max(max_score, amount_completed_tasks())
-        # evaluate random event
-        if amount_completed_tasks()**2+2 >= random.randrange(100_000):
-            random.choice(REGISTERED_ANNOY)()
+        # max index of 10
+        annoyance_index = max(amount_completed_tasks(), len(annoyance_probabilities) - 1)
+
+        if annoyance_probabilities[annoyance_index] >= random.random():
+            if random.random() > 0.7:
+                random.choice(REGISTERED_ANNOY)()
+            else:
+                sabotage_random_completed_task()
 
         if all_tasks_fulfilled():
             add_task()
@@ -164,7 +173,6 @@ def main():
 
 
 tasks: list[Task] = []
-
 
 
 main()
