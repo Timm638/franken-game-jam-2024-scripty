@@ -67,22 +67,28 @@ class ShredTask(Task):
     scenario: ShredScenario
     progress: TaskProgress
     
+    folder: Path
+    
     def __init__(self, scenario: Union[ShredScenario|None] = None):
         if scenario:
             self.scenario = scenario
         else:
             self.scenario = random.choice(shred_scenarios) 
 
-        #shred_scenarios.remove(self.scenario)
-        
         folder_name = self.scenario.folder_name
         target_path = STATE_DIR / folder_name
+        
+        if os.path.isdir(target_path):
+            self.folder = STATE_DIR / f'{next(Task.id_iter)}_{self.scenario.folder_name}'
+        else:
+            self.folder = target_path
+
         if os.path.exists(self.get_state_folder()):
             shutil.rmtree(self.get_state_folder())
         shutil.copytree(MODULE_DIR / folder_name, self.get_state_folder())
 
     def get_state_folder(self) -> Path:
-        return STATE_DIR / self.scenario.folder_name
+        return self.folder
     
     def get_display_name(self) -> str:
         return self.scenario.get_name()

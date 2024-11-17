@@ -82,7 +82,7 @@ def all_tasks_fulfilled() -> bool:
     return True
 
 def add_task():
-    component_list = [ResearchFilesTask]
+    component_list = [ShredTask]
     tasks.append(random.choice(component_list)())
 
 def amount_completed_tasks() -> int:
@@ -100,6 +100,11 @@ def main():
         case "Linux": subprocess.Popen(['xdg-open', STATE_DIR])
         case "Darwin": subprocess.Popen(['open', STATE_DIR])
 
+    add_task()
+    add_task()
+    add_task()
+    add_task()
+    add_task()
     add_task()
 
     cycle_time = 0.1
