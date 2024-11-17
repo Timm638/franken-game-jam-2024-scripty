@@ -91,7 +91,9 @@ class ShredTask(Task):
         return self.folder
     
     def get_display_name(self) -> str:
-        return self.scenario.get_name()
+        name = str(os.path.basename(self.get_state_folder()))
+        return f'{self.scenario.get_name()} in the Folder `{name}`'
+
     
     def get_current_state(self) -> list[str]:
         state_folder = self.get_state_folder()
