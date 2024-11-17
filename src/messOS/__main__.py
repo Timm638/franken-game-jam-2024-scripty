@@ -85,6 +85,10 @@ def add_task():
     component_list = [ResearchFilesTask]
     tasks.append(random.choice(component_list)())
 
+def amount_completed_tasks() -> int:
+    completed_tasks = list(filter(lambda task: task.is_completed(), tasks))
+    return len(completed_tasks)
+
 def main():
     # prepare game
     if os.path.exists(STATE_DIR):
@@ -104,8 +108,12 @@ def main():
     gibber_duration = math.ceil(2.0 / cycle_time)
     gibber_percentage = 0.8
     cur_gibber_duration : int = 0
-
+    
     while True:
+        # evaluate random event
+        if amount_completed_tasks()*5+2 >= random.randrange(100_000):
+            play_random_music()
+
         if all_tasks_fulfilled():
             add_task()
             cur_gibber_duration = gibber_duration
