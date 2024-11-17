@@ -17,10 +17,6 @@ class Task(ABC):
         pass
 
     @abstractmethod
-    def check_progress(self):
-        pass
-    
-    @abstractmethod
     def get_current_progress(self) -> TaskProgress:
         pass
 

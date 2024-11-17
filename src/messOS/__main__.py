@@ -9,6 +9,7 @@ from typing import Literal
 
 from messOS.tasks import Task
 from messOS.tasks.sort_files import SortFilesTask
+from messOS.tasks.shred_files import ShredTask
 from messOS.filesystem import STATE_DIR
 
 from termcolor import colored, cprint
@@ -62,7 +63,8 @@ def all_tasks_fulfilled() -> bool:
     return True
 
 def add_task():
-    component_list = [SortFilesTask]
+    #component_list = [SortFilesTask]
+    component_list = [ShredTask]
     tasks.append(random.choice(component_list)())
 
 def main():

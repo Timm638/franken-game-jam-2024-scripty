@@ -19,7 +19,6 @@ class ShredScenario(Scenario):
     def __init__(self, scenario_name, folder_name, desired_files):
         self.scenario_name = scenario_name
         self.folder_name = folder_name
-        self.initial_files = initial_files
         self.desired_files = desired_files
     
     def get_name(self) -> str:
@@ -42,17 +41,30 @@ shred_scenarios = [
             'beeg_yoshi.png'
         ]
     ),
+    ShredScenario(
+        scenario_name="cleanup the Homeworks folder",
+        folder_name="Homeworks",
+        desired_files=[
+            'Latin.txt',
+            'Math.txt',
+            'philosophy.mkv'
+        ]
+    ),
 ]
 
 class ShredTask(Task):
     scenario: ShredScenario
     progress: TaskProgress
     
-    def __init__(self, scenario=copy.random.choice(shred_scenarios)):
+    def __init__(self, scenario=random.choice(shred_scenarios)):
         self.scenario=scenario
+        shred_scenarios.remove(self.scenario)
         
         folder_name = scenario.folder_name
-        shutil.copytree(MODULE_DIR / folder_name, STATE_DIR / folder_name)
+        target_path = STATE_DIR / folder_name
+        if os.path.exists(self.get_state_folder()):
+            shutil.rmtree(self.get_state_folder())
+        shutil.copytree(MODULE_DIR / folder_name, self.get_state_folder())
 
     def get_state_folder(self) -> Path:
         return STATE_DIR / self.scenario.folder_name
@@ -68,9 +80,10 @@ class ShredTask(Task):
     def get_current_progress(self) -> TaskProgress:
         desired_state = set(self.scenario.desired_files)
         initial_state = set(self.scenario.get_initial_files())
-        current_state = self.get_current_state()
-        if bool(desired_state.difference(current_state)):
+        current_state = set(self.get_current_state())
+
+        if current_state == desired_state:
             return TaskProgress.FINISHED
-        if bool(initial_state.difference(current_state)):
+        if initial_state == current_state:
             return TaskProgress.UNTOUCHED
         return TaskProgress.IN_PROGRESS
