@@ -30,4 +30,8 @@ class Task(ABC):
     @abstractmethod
     def get_display_name(self) -> str:
         pass
+
+    @abstractmethod
+    def sabotage(self):
+        pass
     

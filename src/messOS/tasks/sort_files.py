@@ -133,8 +133,7 @@ class SortFilesTask(Task):
         # TODO: Check if every file still exists, if not restore it in task_dir
         return True
 
-    # Severity from 0 to 10 (reset)
-    def fuck_u (self, severity: int):
+    def sabotage (self):
         self.reset()
 
 

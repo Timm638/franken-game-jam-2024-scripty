@@ -40,8 +40,7 @@ class BackupTask(Task):
                     return True
         return False
 
-    # Severity from 0 to 10 (reset)
-    def fuck_u (self, severity: int):
+    def sabotage (self):
         os.remove(self.task_folder / 'the_best_joke_ever')
 
 

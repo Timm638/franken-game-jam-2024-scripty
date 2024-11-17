@@ -108,6 +108,9 @@ class ShredTask(Task):
         if initial_state == current_state:
             return TaskProgress.UNTOUCHED
         return TaskProgress.IN_PROGRESS
+
+    def sabotage(self):
+        pass
     
     def __str__(self):
         return self.get_display_name()

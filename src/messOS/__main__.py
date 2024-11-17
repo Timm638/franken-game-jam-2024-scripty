@@ -9,10 +9,11 @@ from time import sleep
 from typing import Literal
 
 from messOS.tasks import Task
+from messOS.tasks.backup_files import BackupTask
 from messOS.tasks.research_literature import ResearchFilesTask
 from messOS.tasks.sort_files import SortFilesTask
 from messOS.tasks.shred_files import ShredTask
-from messOS.filesystem import STATE_DIR
+from messOS.filesystem import STATE_DIR, PROJECT_DIR
 
 from messOS.annoyances import REGISTERED_ANNOY
 
@@ -82,12 +83,38 @@ def all_tasks_fulfilled() -> bool:
     return True
 
 def add_task():
-    component_list = [ShredTask]
+    component_list = [ShredTask, ResearchFilesTask, SortFilesTask, BackupTask]
     tasks.append(random.choice(component_list)())
 
 def amount_completed_tasks() -> int:
     completed_tasks = list(filter(lambda task: task.is_completed(), tasks))
     return len(completed_tasks)
+
+def draw_annoying_quotes(max_score : int):
+    completed = amount_completed_tasks()
+    quotes = [
+        '',
+        '',
+        '',
+        '',
+        'Are ya winning son?',
+        'Are ya winning son?',
+        'Are ya winning son?',
+        'Are ya winning son?',
+        'Are ya winning son?',
+        'Are ya winning son?',
+    ]
+    if max_score < len(quotes) and completed < len(quotes):
+        return [quotes[completed]]
+    else:
+        return ['Max Score: {0}'.format(max_score)]
+
+def sabotage_random_completed_task():
+    for i in range(0, 10):
+        chosen_task = random.choice(tasks)
+        if chosen_task.is_completed():
+            chosen_task.sabotage()
+            subprocess.Popen(['cvlc', PROJECT_DIR / 'src' / 'messOS' / 'resources' / 'mlg_horn.mp3'], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
 
 def main():
     # prepare game
@@ -100,12 +127,8 @@ def main():
         case "Linux": subprocess.Popen(['xdg-open', STATE_DIR])
         case "Darwin": subprocess.Popen(['open', STATE_DIR])
 
-    add_task()
-    add_task()
-    add_task()
-    add_task()
-    add_task()
-    add_task()
+    for i in range(10):
+        add_task()
 
     cycle_time = 0.1
 
@@ -114,9 +137,12 @@ def main():
     gibber_percentage = 0.8
     cur_gibber_duration : int = 0
 
+    max_score = 0
+
     frame_count = 0
-    
+
     while True:
+        max_score = max(max_score, amount_completed_tasks())
         # evaluate random event
         if amount_completed_tasks()**2+2 >= random.randrange(100_000):
             random.choice(REGISTERED_ANNOY)()
@@ -124,7 +150,10 @@ def main():
         if all_tasks_fulfilled():
             add_task()
             cur_gibber_duration = gibber_duration
+
+        l_aq = draw_annoying_quotes(max_score)
         l = draw_tasklist()
+        l = l_aq + l
         if cur_gibber_duration > 0:
             l = draw_gibberish_on(l, gibber_percentage * (cur_gibber_duration/gibber_duration))
             cur_gibber_duration -= 1
@@ -135,6 +164,7 @@ def main():
 
 
 tasks: list[Task] = []
+
 
 
 main()
