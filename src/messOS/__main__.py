@@ -114,7 +114,7 @@ def sabotage_random_completed_task():
         chosen_task = random.choice(tasks)
         if chosen_task.is_completed():
             chosen_task.sabotage()
-            subprocess.Popen(['cvlc', PROJECT_DIR / 'src' / 'messOS' / 'resources' / 'mlg_horn.mp3'], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+            subprocess.Popen(['cvlc', PROJECT_DIR / 'src' / 'messOS' / 'resources' / 'mlg_horn.mp3', '--no-loop'], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
             return
 
 def main():
