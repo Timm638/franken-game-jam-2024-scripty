@@ -14,6 +14,8 @@ from messOS.tasks.sort_files import SortFilesTask
 from messOS.tasks.shred_files import ShredTask
 from messOS.filesystem import STATE_DIR
 
+from messOS.annoyances import play_random_music
+
 from termcolor import colored, cprint
 
 
