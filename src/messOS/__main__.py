@@ -162,7 +162,7 @@ ShredTask(scenario=shred_scenarios[2])
         annoyance_index = min(amount_completed_tasks(), len(annoyance_probabilities) - 1)
 
         if annoyance_probabilities[annoyance_index] >= random.random():
-            if random.random() > 0.7:
+            if random.random() < 0.9:
                 random.choice(REGISTERED_ANNOY)()
             else:
                 sabotage_random_completed_task()
