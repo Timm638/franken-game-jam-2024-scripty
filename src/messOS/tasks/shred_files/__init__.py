@@ -4,6 +4,7 @@ import copy
 import shutil
 import glob
 from pathlib import Path
+from typing import Union
 
 from messOS.filesystem import STATE_DIR
 from .. import Task, Scenario, TaskProgress
@@ -56,11 +57,15 @@ class ShredTask(Task):
     scenario: ShredScenario
     progress: TaskProgress
     
-    def __init__(self, scenario=random.choice(shred_scenarios)):
-        self.scenario=scenario
-        shred_scenarios.remove(self.scenario)
+    def __init__(self, scenario: Union[ShredScenario|None] = None):
+        if scenario:
+            self.scenario = scenario
+        else:
+            self.scenario = random.choice(shred_scenarios) 
+
+        #shred_scenarios.remove(self.scenario)
         
-        folder_name = scenario.folder_name
+        folder_name = self.scenario.folder_name
         target_path = STATE_DIR / folder_name
         if os.path.exists(self.get_state_folder()):
             shutil.rmtree(self.get_state_folder())
@@ -87,3 +92,6 @@ class ShredTask(Task):
         if initial_state == current_state:
             return TaskProgress.UNTOUCHED
         return TaskProgress.IN_PROGRESS
+    
+    def __str__(self):
+        return self.get_display_name()
