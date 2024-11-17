@@ -14,7 +14,7 @@ from messOS.tasks.sort_files import SortFilesTask
 from messOS.tasks.shred_files import ShredTask
 from messOS.filesystem import STATE_DIR
 
-from messOS.annoyances import play_random_music
+from messOS.annoyances import play_random_music, produce_rabbit
 
 from termcolor import colored, cprint
 
@@ -108,11 +108,15 @@ def main():
     gibber_duration = math.ceil(2.0 / cycle_time)
     gibber_percentage = 0.8
     cur_gibber_duration : int = 0
+
+    frame_count = 0
     
     while True:
         # evaluate random event
-        if amount_completed_tasks()*5+2 >= random.randrange(100_000):
-            play_random_music()
+        #if amount_completed_tasks()*5+2 >= random.randrange(100_000):
+        #    play_random_music()
+        if (frame_count % 200) == 0:
+            produce_rabbit()
 
         if all_tasks_fulfilled():
             add_task()
@@ -122,6 +126,7 @@ def main():
             l = draw_gibberish_on(l, gibber_percentage * (cur_gibber_duration/gibber_duration))
             cur_gibber_duration -= 1
         frame(l, cycle_time)
+        frame_count += 1
 
 ### run module ###
 

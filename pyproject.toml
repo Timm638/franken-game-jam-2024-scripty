@@ -15,7 +15,6 @@ classifiers = [
 dependencies = [
   'termcolor==2.5.0',
   'textual',
-  'PythonOverlayLib',
   'mouse',
   'watchdog',
   'python-vlc'
