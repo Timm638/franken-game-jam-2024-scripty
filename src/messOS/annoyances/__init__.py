@@ -34,6 +34,6 @@ def random_meme():
     meme_response = httpx.get(MEME_API)
     if meme_response.status_code == httpx.codes.OK:
         meme_url = meme_response.json()['url']
-        webbrowser.open(meme_url)
+        webbrowser.open(meme_url, new=1)
         
 REGISTERED_ANNOY = [play_random_music, random_meme, produce_rabbit]

@@ -189,4 +189,4 @@ ShredTask(scenario=shred_scenarios[2])
 tasks: list[Task] = []
 
 
-#main()
+main()
