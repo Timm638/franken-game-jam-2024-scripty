@@ -24,6 +24,8 @@ def produce_rabbit():
         rabbit_name = random.choice(['rabbit', 'ribbit', 'bunnny', 'garnickl', 'kaninchen'])
         rabbit_image_path = os.path.dirname(os.path.realpath(__file__)) / Path('../resources/rabbit.png')
         des_folder = random.choice(os.listdir(STATE_DIR))
+        if not os.path.isdir(STATE_DIR / des_folder):
+            continue
         rabbit_des = STATE_DIR / des_folder / Path(rabbit_name + '_' + str(uuid.uuid4()) + '.png')
         shutil.copyfile(rabbit_image_path, rabbit_des)
 
