@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Union
 from enum import Enum, auto
+import itertools
 
 class TaskProgress(Enum):
     UNTOUCHED = auto()
@@ -13,6 +14,8 @@ class Scenario(ABC):
         pass
 
 class Task(ABC):
+    id_iter = itertools.count()
+
     @abstractmethod
     def __init__(self, scenario: Union[Scenario, None]):
         pass

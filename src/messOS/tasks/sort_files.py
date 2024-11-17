@@ -108,7 +108,11 @@ class SortFilesTask(Task):
 
     def __init__(self, scenario = None):
         self.scenario = copy.deepcopy(random.choice(scenarios)) if not scenario else scenario
-        self.description = 'Sort the folder \'{0}\''.format(self.scenario.folder_name)
+        self.task_folder = STATE_DIR / Path(self.scenario.folder_name)
+        if os.path.isdir(self.task_folder):
+            # Fallback option
+            self.task_folder = STATE_DIR / Path(str(next(Task.id_iter))+ '_' + self.scenario.folder_name)
+        self.description = 'Sort the folder \'{0}\''.format(self.task_folder.name)
         self.reset()
     
     def get_display_name(self):
@@ -140,7 +144,6 @@ class SortFilesTask(Task):
         f.close()
 
     def reset(self):
-        self.task_folder = STATE_DIR / Path(self.scenario.folder_name)
         if os.path.exists(self.task_folder):
             shutil.rmtree(self.task_folder)
         os.mkdir(self.task_folder)
