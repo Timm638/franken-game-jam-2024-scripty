@@ -10,9 +10,9 @@ from typing import Literal
 
 from messOS.tasks import Task
 from messOS.tasks.backup_files import BackupTask
-from messOS.tasks.research_literature import ResearchFilesTask
-from messOS.tasks.sort_files import SortFilesTask
-from messOS.tasks.shred_files import ShredTask
+from messOS.tasks.research_literature import ResearchFilesTask, research_scenarios
+from messOS.tasks.sort_files import SortFilesTask, SortScenario, sort_scenarios
+from messOS.tasks.shred_files import ShredTask, shred_scenarios
 from messOS.filesystem import STATE_DIR, PROJECT_DIR
 
 from messOS.annoyances import REGISTERED_ANNOY
@@ -115,6 +115,7 @@ def sabotage_random_completed_task():
         if chosen_task.is_completed():
             chosen_task.sabotage()
             subprocess.Popen(['cvlc', PROJECT_DIR / 'src' / 'messOS' / 'resources' / 'mlg_horn.mp3'], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+            return
 
 def main():
     # prepare game
@@ -127,11 +128,21 @@ def main():
         case "Linux": subprocess.Popen(['xdg-open', STATE_DIR])
         case "Darwin": subprocess.Popen(['open', STATE_DIR])
 
-    for i in range(10):
-        add_task()
+    global tasks
+    tasks = [
+        BackupTask(),
+    SortFilesTask(scenario=sort_scenarios[0]),
+SortFilesTask(scenario=sort_scenarios[1]),
+SortFilesTask(scenario=sort_scenarios[2]),
+ResearchFilesTask(scenario=research_scenarios[0]),
+ResearchFilesTask(scenario=research_scenarios[1]),
+ResearchFilesTask(scenario=research_scenarios[2]),
+    ShredTask(scenario=shred_scenarios[0]),
+ShredTask(scenario=shred_scenarios[1]),
+ShredTask(scenario=shred_scenarios[2])
+        ]
 
     cycle_time = 0.1
-
 
     gibber_duration = math.ceil(2.0 / cycle_time)
     gibber_percentage = 0.8
@@ -148,7 +159,7 @@ def main():
     while True:
         max_score = max(max_score, amount_completed_tasks())
         # max index of 10
-        annoyance_index = max(amount_completed_tasks(), len(annoyance_probabilities) - 1)
+        annoyance_index = min(amount_completed_tasks(), len(annoyance_probabilities) - 1)
 
         if annoyance_probabilities[annoyance_index] >= random.random():
             if random.random() > 0.7:
@@ -170,7 +181,6 @@ def main():
         frame_count += 1
 
 ### run module ###
-
 
 tasks: list[Task] = []
 

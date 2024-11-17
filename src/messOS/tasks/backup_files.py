@@ -41,7 +41,8 @@ class BackupTask(Task):
         return False
 
     def sabotage (self):
-        os.remove(self.task_folder / 'the_best_joke_ever')
+        if os.path.exists(self.task_folder / 'the_best_joke_ever'):
+            os.remove(self.task_folder / 'the_best_joke_ever')
 
 
     def create_file(self, file_path: Path, file_content: str = 'No content given. :)'):

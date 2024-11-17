@@ -28,7 +28,7 @@ class SortScenario(Scenario):
     def get_name(self) -> str:
         return self.folder_name
 
-scenarios =  [
+sort_scenarios =  [
     SortScenario(
         [
             '1_documents',
@@ -107,7 +107,7 @@ class SortFilesTask(Task):
     scenario : SortScenario
 
     def __init__(self, scenario = None):
-        self.scenario = copy.deepcopy(random.choice(scenarios)) if not scenario else scenario
+        self.scenario = copy.deepcopy(random.choice(sort_scenarios)) if not scenario else scenario
         self.task_folder = STATE_DIR / Path(self.scenario.folder_name)
         if os.path.isdir(self.task_folder):
             # Fallback option

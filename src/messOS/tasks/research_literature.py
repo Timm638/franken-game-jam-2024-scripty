@@ -22,7 +22,7 @@ class ResearchScenario:
         new_scenario.folder_name = copy.deepcopy(self.folder_name)
         return new_scenario
 
-scenarios =  [
+research_scenarios =  [
     ResearchScenario(
         [
             ('genesis_chapter_1_verse_28.txt', ['fruitful', 'earth', 'creature']),
@@ -57,7 +57,7 @@ class ResearchFilesTask(Task):
     scenario : ResearchScenario
 
     def __init__(self, scenario = None):
-        self.scenario = copy.deepcopy(random.choice(scenarios)) if not scenario else scenario
+        self.scenario = copy.deepcopy(random.choice(research_scenarios)) if not scenario else scenario
         self.task_folder = STATE_DIR / Path(self.scenario.folder_name)
         if os.path.isdir(self.task_folder):
             # Fallback option
