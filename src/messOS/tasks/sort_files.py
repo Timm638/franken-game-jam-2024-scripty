@@ -106,8 +106,8 @@ class SortFilesTask(Task):
     task_folder : Path
     scenario : SortScenario
 
-    def __init__(self, scenario=copy.deepcopy(random.choice(scenarios))):
-        self.scenario = scenario
+    def __init__(self, scenario = None):
+        self.scenario = copy.deepcopy(random.choice(scenarios)) if not scenario else scenario
         self.description = 'Sort the folder \'{0}\''.format(self.scenario.folder_name)
         self.reset()
     
@@ -121,6 +121,9 @@ class SortFilesTask(Task):
         return TaskProgress.IN_PROGRESS
 
     def is_completed(self) -> bool:
+        # shortcut
+        if os.path.isfile(self.task_folder / 'done'):
+            return True
         # for every item
         for item in self.scenario.items:
             folder_name = self.scenario.folders[item[2]]

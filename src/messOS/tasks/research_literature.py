@@ -7,108 +7,59 @@ import shutil
 from . import Task, Scenario, TaskProgress
 from messOS.filesystem import STATE_DIR
 
-class SortScenario(Scenario):
+class ResearchScenario(Scenario):
 
-    folders : list
     items : list
     folder_name : str
 
-    def __init__(self, folders, items, folder_name):
-        self.folders = folders
+    def __init__(self, items, folder_name):
         self.items = items
         self.folder_name = folder_name
 
     def __deepcopy__(self, memodict={}):
-        new_scenario = SortScenario(self.folders, self.items, self.folder_name)
+        new_scenario = ResearchScenario(self.folders, self.items, self.folder_name)
         new_scenario.folders = copy.deepcopy(self.folders)
         new_scenario.items = copy.deepcopy(self.items)
         new_scenario.folder_name = copy.deepcopy(self.folder_name)
         return new_scenario
-    
-    def get_name(self) -> str:
-        return self.folder_name
 
 scenarios =  [
-    SortScenario(
+    ResearchScenario(
         [
-            '1_documents',
-            '2_music',
-            '3_tax_documents'
+            ('genesis_chapter_1_verse_28.txt', ['fruitful', 'earth', 'creature']),
+            ('romans_chapter_12_verse_12.txt', ['joyful', 'affliction', 'prayer']),
+            ('psalm_chapter_9_verse_9.txt', ['refuge', 'stronghold', 'prayer']),
         ],
-        [
-            ('work_report.txt', 'FEBRUARY 2025', 0),
-            ('your_perfect_partner_theme_doodle.mp3', 'Dododoo do dod do dooooo do', 1),
-            ('tax_evasion.pdf', ':)', 2),
-        ],
-        'home'
+        'to_research_in_english'
     ),
-    SortScenario(
+    ResearchScenario(
         [
-            '1_democratic',
-            '2_republican',
+            ('quran_chapter_66_verse_6.txt', ['families', 'angels', 'commanded']),
+            ('romans_chapter_2_verse_45.txt', ['patience', 'prayer', 'submissive']),
+            ('psalm_chapter_84_verse_25.txt', ['believe', 'righteous', 'uninterrupted']),
         ],
-        [
-            ('barack____obama.char', '', 0),
-            ('donald____trump.char', '', 1),
-            ('joe_______biden.char', '', 0),
-            ('george_w__bush.char', '', 1),
-            ('bill______clinton.char', '', 0),
-            ('george_hw_bush.char', '', 1),
-            ('ronald____reagan.char', '', 1),
-            ('jimmy_____carter.char', '', 0),
-            ('gerald____ford.char', '', 1),
-            ('richard___nixon.char', '', 1),
-            ('john____f_kennedy.char', '', 0),
-        ],
-    'free_country'
+        'to_research_in_english'
     ),
-    SortScenario(
+    ResearchScenario(
         [
-            '0_Who_has_Paul_thanked_for_each_location_in_keynote',
-            '1_Bamberg',
-            '2_Coburg',
-            '3_Bayreuth',
-            '4_Nuremberg',
-            '5_Wuerzburg',
-            '6_Hof',
+            ('MINECRAFT__blast_resistance_of_obsidian.txt', ['1200']),
+            ('TERRARIA_use_time_of_drax.txt', ['15']),
+            ('AMONG_US_max_player_count.txt', ['15']),
         ],
-        [
-            ('luise.char', '', 1),
-            ('alisa.char', '', 2),
-            ('laura.char', '', 3),
-            ('sebastian.char', '', 4),
-            ('linda.char', '', 5),
-            ('andy.char', '', 6),
-        ],
-        'franken_game_jam_2024'
-    ),
-    SortScenario(
-        [
-            'Actions',
-            'Strategy',
-            'RPG',
-            'Sandbox'
-        ],
-        [
-            ('battlef1eld', '', 0),
-            ('call_of_duti', '', 0),
-            ('civilization', '', 1),
-            ('minceraft', '', 3),
-            ('final_fantasi', '', 2),
-        ],
-        'games'
+        'to_research_in_english'
     )
 ]
 
-class SortFilesTask(Task):
+
+class ResearchFilesTask(Task):
 
     description : str
     task_folder : Path
-    scenario : SortScenario
+    scenario : ResearchScenario
 
     def __init__(self, scenario = None):
         self.scenario = copy.deepcopy(random.choice(scenarios)) if not scenario else scenario
-        self.description = 'Sort the folder \'{0}\''.format(self.scenario.folder_name)
+        self.description = 'Research the items in \'{0}\''.format(self.scenario.folder_name)
         self.reset()
     
     def get_display_name(self):
