@@ -7,7 +7,7 @@ import shutil
 from . import Task, Scenario, TaskProgress
 from messOS.filesystem import STATE_DIR
 
-class ResearchScenario(Scenario):
+class ResearchScenario:
 
     items : list
     folder_name : str
@@ -17,8 +17,7 @@ class ResearchScenario(Scenario):
         self.folder_name = folder_name
 
     def __deepcopy__(self, memodict={}):
-        new_scenario = ResearchScenario(self.folders, self.items, self.folder_name)
-        new_scenario.folders = copy.deepcopy(self.folders)
+        new_scenario = ResearchScenario(self.items, self.folder_name)
         new_scenario.items = copy.deepcopy(self.items)
         new_scenario.folder_name = copy.deepcopy(self.folder_name)
         return new_scenario
@@ -28,23 +27,23 @@ scenarios =  [
         [
             ('genesis_chapter_1_verse_28.txt', ['fruitful', 'earth', 'creature']),
             ('romans_chapter_12_verse_12.txt', ['joyful', 'affliction', 'prayer']),
-            ('psalm_chapter_9_verse_9.txt', ['refuge', 'stronghold', 'prayer']),
+            ('psalm_chapter_9_verse_9.txt', ['refuge', 'stronghold']),
         ],
         'to_research_in_english'
     ),
     ResearchScenario(
         [
             ('quran_chapter_66_verse_6.txt', ['families', 'angels', 'commanded']),
-            ('romans_chapter_2_verse_45.txt', ['patience', 'prayer', 'submissive']),
-            ('psalm_chapter_84_verse_25.txt', ['believe', 'righteous', 'uninterrupted']),
+            ('quran_chapter_2_verse_45.txt', ['patience', 'prayer']),
+            ('quran_chapter_84_verse_25.txt', ['believe', 'reward']),
         ],
         'to_research_in_english'
     ),
     ResearchScenario(
         [
             ('MINECRAFT__blast_resistance_of_obsidian.txt', ['1200']),
-            ('TERRARIA_use_time_of_drax.txt', ['15']),
-            ('AMONG_US_max_player_count.txt', ['15']),
+            ('TERRARIA__use_time_of_drax.txt', ['15']),
+            ('AMONG_US__max_player_count.txt', ['15']),
         ],
         'to_research_in_english'
     )
@@ -77,9 +76,13 @@ class ResearchFilesTask(Task):
             return True
         # for every item
         for item in self.scenario.items:
-            folder_name = self.scenario.folders[item[2]]
-            if not os.path.isfile(self.task_folder / folder_name / item[0]):
+            if not os.path.isfile(self.task_folder / item[0]):
                 return False
+            with open(self.task_folder / item[0], 'r') as f:
+                file_content = f.read().lower()
+                for keyword in item[1]:
+                    if keyword.lower()  not in file_content:
+                        return False
         # TODO: Check if every file still exists, if not restore it in task_dir
         return True
 
@@ -98,10 +101,7 @@ class ResearchFilesTask(Task):
         if os.path.exists(self.task_folder):
             shutil.rmtree(self.task_folder)
         os.mkdir(self.task_folder)
-        # Setup folders
-        for folder in self.scenario.folders:
-            os.mkdir(self.task_folder / Path(folder))
         # Setup items
         for item in self.scenario.items:
-            self.create_file(item[0], item[1])
+            self.create_file(item[0], 'Put the answer into this document.')
         pass
