@@ -51,6 +51,16 @@ shred_scenarios = [
             'philosophy.mkv'
         ]
     ),
+    ShredScenario(
+        scenario_name="Blip(Snap) the Characters away",
+        folder_name="Avengers",
+        desired_files=[
+            'Bruce Banner.char',
+            'Natasha Romanoff.char',
+            'Rocket.char',
+            'Tony Stark.char'
+        ]
+    ),
 ]
 
 class ShredTask(Task):
