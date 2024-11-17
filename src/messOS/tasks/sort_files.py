@@ -114,9 +114,6 @@ class SortFilesTask(Task):
     def get_display_name(self):
         return self.description
 
-    def check_progress(self):
-        pass
-    
     def get_current_progress(self):
         return TaskProgress.IN_PROGRESS
 

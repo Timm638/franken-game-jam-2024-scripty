@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Union
 from enum import Enum, auto
 
 class TaskProgress(Enum):
@@ -13,13 +14,9 @@ class Scenario(ABC):
 
 class Task(ABC):
     @abstractmethod
-    def __init__(self, scenario: Scenario):
+    def __init__(self, scenario: Union[Scenario, None]):
         pass
 
-    @abstractmethod
-    def check_progress(self):
-        pass
-    
     @abstractmethod
     def get_current_progress(self) -> TaskProgress:
         pass
