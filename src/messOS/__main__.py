@@ -100,12 +100,8 @@ def main():
         case "Linux": subprocess.Popen(['xdg-open', STATE_DIR])
         case "Darwin": subprocess.Popen(['open', STATE_DIR])
 
-    add_task()
-    add_task()
-    add_task()
-    add_task()
-    add_task()
-    add_task()
+    for _ in range(10):
+        add_task()
 
     cycle_time = 0.1
 
@@ -115,12 +111,19 @@ def main():
     cur_gibber_duration : int = 0
 
     frame_count = 0
+
+    annoyance_probabilities = [
+        0,    0,   0,    0.003, 0.005,
+        0.01, 0.015, 0.02, 0.025,  0.03 ]
     
     while True:
-        # evaluate random event
-        if amount_completed_tasks()**2+2 >= random.randrange(100_000):
-            random.choice(REGISTERED_ANNOY)()
+        
+        # max index of 10
+        annoyance_index = amount_completed_tasks() if amount_completed_tasks() < len(annoyance_probabilities) else len(annoyance_index)-1
 
+        if annoyance_probabilities[annoyance_index] >= random.random():
+            random.choice(REGISTERED_ANNOY)()
+                
         if all_tasks_fulfilled():
             add_task()
             cur_gibber_duration = gibber_duration
